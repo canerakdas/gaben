@@ -1,0 +1,107 @@
+{{template "header" .}}
+<div id="content">
+    <div class="container">
+        <nav id="breadcrumb">
+            {{if .Content.Genres}}
+                <ul>
+                    {{range $key, $value := .Content.Genres}}
+                        <li>
+                            <a href="">{{$value.Description}}</a>
+                        </li>
+                    {{end}}
+                </ul>
+            {{end}}
+        </nav>
+        <div id="game-detail">
+            <div class="item" id="media">
+                <div class="movie">
+                {{if .Content.Movies}}
+                    {{range $key, $value := .Content.Movies}}
+                        <iframe width="640" height="360" src="{{$value.Webm.Num480}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    {{end}}
+                {{end}}
+                </div>
+                <div class="screenshots">
+                {{if .Content.Screenshots}}
+                    {{range $key, $value := .Content.Screenshots}}
+                        <img src="{{$value.PathThumbnail}}" />
+                    {{end}}
+                {{end}}
+                </div>
+            </div>
+
+            <div class="item" id="information">
+                <h3>{{.Content.Name}}</h3>
+                <p>{{.Content.ShortDescription}}</p>
+=
+                {{if .Content.Developers}}
+                <strong>Developers</strong>
+                <ul>
+                    {{range $key, $value := .Content.Developers}}
+                    <li>
+                        {{$value}}
+                    </li>
+                    {{end}}
+                </ul>
+                {{end}}
+
+                {{if .Content.Publishers}}
+                    <strong>Publishers</strong>
+                    <ul>
+                        {{range $key, $value := .Content.Publishers}}
+                            <li>
+                                {{$value}}
+                            </li>
+                        {{end}}
+                    </ul>
+                {{end}}
+
+                {{if .Content.ReleaseDate.Date}}
+                <strong>Release Date</strong>
+                <ul>
+                    <li>{{.Content.ReleaseDate.Date}}</li>
+                </ul>
+                {{end}}
+            </div>
+        </div>
+        <div id="player">
+            <ul>
+                <li class="active">Trailer</li>
+                <li>Gameplay</li>
+                <li>Twitch</li>
+                <li>Screenshots</li>
+            </ul>
+        </div>
+        <div class="widget">
+            <h5>Price comparison</h5>
+            <div class="widget-container">
+                <div class="widget-item">
+                    <div class="widget-image"></div>
+                    <div class="widget-logo"></div>
+                    <div class="widget-badge"></div>
+                    <div class="widget-name">Tropico 4</div>
+                    <div class="widget-price">
+                        <span class="price">11.50$</span>
+                        <span class="old-price">15.80$</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="widget">
+            <h5>Similar Games</h5>
+            <div class="widget-container">
+                <div class="widget-item">
+                    <div class="widget-image"></div>
+                    <div class="widget-logo"></div>
+                    <div class="widget-badge"></div>
+                    <div class="widget-name">Tropico 4</div>
+                    <div class="widget-price">
+                        <span class="price">11.50$</span>
+                        <span class="old-price">15.80$</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{template "footer"}}
