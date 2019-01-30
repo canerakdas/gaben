@@ -1,4 +1,30 @@
 {{template "header" .}}
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            var mediaElements = document.querySelectorAll("#media > div")
+
+            for(var i=0;i<mediaElements.length;i++){
+                mediaElements[i].setAttribute("style","display:none")
+            }
+
+            mediaElements[0].setAttribute("style","display:block")
+            document.querySelector("#player ul li").classList.add("active")
+
+            var tabList = document.querySelectorAll("#player ul li")
+
+            for(var i=0;i<tabList.length;i++){
+                tabList[i].addEventListener("click",function(e){
+                    var mediaElements = document.querySelectorAll("#media > div")
+                    document.querySelector("#player ul .active").classList.remove("active")
+                    this.classList.add("active")
+                    for(var i=0;i<mediaElements.length;i++){
+                        mediaElements[i].setAttribute("style","display:none")
+                    }
+                    document.querySelector("#media ."+this.getAttribute("data-class")).setAttribute("style","display:block")
+                },false);
+            }
+        }, false);
+    </script>
 <div id="content">
     <div class="container">
         <nav id="breadcrumb">
@@ -6,7 +32,7 @@
                 <ul>
                     {{range $key, $value := .Content.Genres}}
                         <li>
-                            <a href="">{{$value.Description}}</a>
+                            <a href="/catalog/{{$value.ID}}/{{$value.Description}}">{{$value.Description}}</a>
                         </li>
                     {{end}}
                 </ul>
@@ -14,19 +40,22 @@
         </nav>
         <div id="game-detail">
             <div class="item" id="media">
-                <div class="movie">
                 {{if .Content.Movies}}
+                <div class="movie">
                     {{range $key, $value := .Content.Movies}}
                         <iframe width="640" height="360" src="{{$value.Webm.Num480}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                     {{end}}
-                {{end}}
                 </div>
-                <div class="screenshots">
+                {{end}}
                 {{if .Content.Screenshots}}
+                <div class="screenshots">
                     {{range $key, $value := .Content.Screenshots}}
                         <img src="{{$value.PathThumbnail}}" />
                     {{end}}
+                </div>
                 {{end}}
+                <div class="gameplay">
+                    <iframe width="640" height="360" src="https://www.youtube.com/embed?listType=search&list={{.Content.Name}}%20Gameplay" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
 
@@ -66,10 +95,14 @@
         </div>
         <div id="player">
             <ul>
-                <li class="active">Trailer</li>
-                <li>Gameplay</li>
-                <li>Twitch</li>
-                <li>Screenshots</li>
+            {{if .Content.Movies}}
+                <li data-class="movie">Trailer</li>
+            {{end}}
+            {{if .Content.Screenshots}}
+                <li data-class="screenshots">Screenshots</li>
+            {{end}}
+                <li data-class="gameplay">Gameplay</li>
+                <li><a href="https://www.twitch.tv/directory/game/{{.Content.Name}}" target="_blank">Twitch</a></li>
             </ul>
         </div>
         <div class="widget">
