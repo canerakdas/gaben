@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/canerakdas/game_crawl/controllers"
+	"github.com/canerakdas/gaben/controllers"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"

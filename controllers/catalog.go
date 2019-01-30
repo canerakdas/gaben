@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/canerakdas/game_crawl/models"
-	"github.com/canerakdas/game_crawl/utils"
+	"github.com/canerakdas/gaben/models"
+	"github.com/canerakdas/gaben/utils"
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
 	"html/template"

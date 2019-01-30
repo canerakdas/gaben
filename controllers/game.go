@@ -3,8 +3,8 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/canerakdas/game_crawl/models"
-	"github.com/canerakdas/game_crawl/utils"
+	"github.com/canerakdas/gaben/models"
+	"github.com/canerakdas/gaben/utils"
 	"github.com/go-redis/redis"
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"

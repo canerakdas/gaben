@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/canerakdas/game_crawl/models"
-	"github.com/canerakdas/game_crawl/utils"
+	"github.com/canerakdas/gaben/models"
+	"github.com/canerakdas/gaben/utils"
 	"strings"
 )
 
