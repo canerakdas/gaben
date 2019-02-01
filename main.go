@@ -16,6 +16,15 @@ func main() {
 	//r.HandleFunc("/catalog/",controllers.GetCatalog).Methods("GET")
 	r.HandleFunc("/catalog/{id}/{name}", controllers.GetCatalog).Methods("GET")
 
+	// User operations
+	r.HandleFunc("/user",controllers.GetUser).Methods("GET")
+	r.HandleFunc("/user",controllers.PostUser).Methods("POST")
+	r.HandleFunc("/user",controllers.PatchUser).Methods("PATCH")
+	r.HandleFunc("/user",controllers.DeleteUser).Methods("DELETE")
+
+	r.HandleFunc("/secret", controllers.Secret)
+	r.HandleFunc("/logout", controllers.Logout)
+
 	r.PathPrefix("/styles/").Handler(http.StripPrefix("/styles/", http.FileServer(http.Dir("template/styles/"))))
 
 	controllers.CollectHeader()
