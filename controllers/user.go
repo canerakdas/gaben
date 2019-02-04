@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/canerakdas/gaben/models"
 	"github.com/canerakdas/gaben/utils"
 	"github.com/gorilla/sessions"
@@ -40,21 +39,6 @@ func CheckUserStatus(w http.ResponseWriter, r *http.Request){
 	}else{
 		Status.Online = false
 	}
-}
-
-func Secret(w http.ResponseWriter, r *http.Request) {
-	session, _ := store.Get(r, "cookie-name")
-	// Check if user is authenticated
-	if session.Values["authenticated"] == false{
-		http.Error(w, "Forbidden", http.StatusForbidden)
-		return
-	}
-
-	//if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
-	//}
-
-	// Print secret message
-	fmt.Fprintln(w, session.Values["user"])
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
