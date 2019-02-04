@@ -23,7 +23,7 @@ func main() {
 	r.HandleFunc("/user",controllers.DeleteUser).Methods("DELETE")
 
 	r.HandleFunc("/secret", controllers.Secret)
-	r.HandleFunc("/logout", controllers.Logout)
+	r.HandleFunc("/logout", controllers.Logout).Methods("GET")
 
 	r.PathPrefix("/styles/").Handler(http.StripPrefix("/styles/", http.FileServer(http.Dir("template/styles/"))))
 

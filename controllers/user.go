@@ -30,9 +30,20 @@ var (
 	key = []byte("super-secret-key")
 	store = sessions.NewCookieStore(key)
 )
-func Secret(w http.ResponseWriter, r *http.Request) {
+var Status models.Status
+
+func CheckUserStatus(w http.ResponseWriter, r *http.Request){
 	session, _ := store.Get(r, "cookie-name")
 
+	if session.Values["authenticated"] == true {
+		Status.Online = true
+	}else{
+		Status.Online = false
+	}
+}
+
+func Secret(w http.ResponseWriter, r *http.Request) {
+	session, _ := store.Get(r, "cookie-name")
 	// Check if user is authenticated
 	if session.Values["authenticated"] == false{
 		http.Error(w, "Forbidden", http.StatusForbidden)
@@ -43,7 +54,7 @@ func Secret(w http.ResponseWriter, r *http.Request) {
 	//}
 
 	// Print secret message
-	fmt.Fprintln(w, session.Values["user "])
+	fmt.Fprintln(w, session.Values["user"])
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {

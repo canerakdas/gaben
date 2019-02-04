@@ -7,6 +7,41 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Roboto" rel="stylesheet">
     <link rel="stylesheet" href="/styles/normalize.css">
     <link rel="stylesheet" href="/styles/skeleton.css">
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+
+            if(document.getElementById("login-button")){
+                document.getElementById("login-button").addEventListener("click",function(e){
+                var email = document.getElementById("login-email").value
+                var password = document.getElementById("login-password").value
+                var url = 'http://localhost:8080/user';
+
+                fetch(url, {
+                    method: 'GET', // or 'PUT'
+                    headers:{
+                        'Content-Type': 'application/json',
+                        'Email': email,
+                        'Password': password
+                    }
+                }).then(res => res.json())
+                    .then(response => window.location.reload())
+                    .catch(error => alert('Error:', error));
+            },false)
+            }
+            if(document.getElementById("logout-button")){
+                document.getElementById("logout-button").addEventListener("click",function(e){
+
+                    var url = 'http://localhost:8080/logout';
+
+                    fetch(url, {
+                        method: 'GET', // or 'PUT'
+                    }).then(res => window.location.reload())
+                        .catch(error => alert('Error:', error));
+
+                }, false);
+            }
+        }, false);
+    </script>
 </head>
 <body>
 <div id="header">
@@ -38,7 +73,15 @@
         <div class="item" id="toolbox">
             <input id="search-box" type="text" placeholder="Search Game">
             <a class="toolbox-button" href=""></a>
-            <a class="toolbox-button" href=""></a>
+            <div class="toolbox-button-2">
+                {{if .Status.Online}}
+                    <div id="logout-button">Logout</div>
+                {{else}}
+                    <input id="login-email" type="text" value="" placeholder="email">
+                    <input id="login-password" type="password" placeholder="password">
+                    <div id="login-button">Login</div>
+                {{end}}
+            </div>
         </div>
     </div>
 </div>

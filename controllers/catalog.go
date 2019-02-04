@@ -14,6 +14,8 @@ import (
 
 // GET -- 200 (OK), single game. 404 (Not Found), if ID not found or invalid.
 func GetCatalog(w http.ResponseWriter, r *http.Request) {
+	CheckUserStatus(w,r)
+
 	vars := mux.Vars(r)
 	id := vars["id"]
 	name := vars["name"]
@@ -62,6 +64,7 @@ func GetCatalog(w http.ResponseWriter, r *http.Request) {
 		Content:    catalog,
 		Pagination: pagination,
 		Footer:     []string{"haha"},
+		Status:		Status,
 	}
 
 	tpl.Execute(w, template)

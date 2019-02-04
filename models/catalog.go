@@ -6,4 +6,5 @@ type CatalogTemplate struct {
 	Content    []Game
 	Pagination []string
 	Footer     []string
+	Status	   Status
 }

@@ -19,12 +19,14 @@ type GameDetailTemplate struct {
 	Title   string
 	Content Game
 	Footer  []string
+	Status	models.Status
 }
 
 var tpl *template.Template
 
 // GET -- 200 (OK), single game. 404 (Not Found), if ID not found or invalid.
 func IGetGame(w http.ResponseWriter, r *http.Request) {
+	CheckUserStatus(w,r)
 	var game Game
 	vars := mux.Vars(r)
 	id, _ := strconv.Atoi(vars["id"])
@@ -32,9 +34,29 @@ func IGetGame(w http.ResponseWriter, r *http.Request) {
 	err := utils.GameDb.Find(bson.M{"steamappid": id}).One(&game)
 
 	var templates = []string{"./template/game.gohtml", "./template/header.gohtml", "./template/footer.gohtml"}
-	var page = GameDetailTemplate{GetHeader(), game.Name, game, []string{}}
+	var page = GameDetailTemplate{GetHeader(), game.Name, game, []string{}, Status}
 
 	ExecuteGameTemplate(w, templates, page)
+
+	session, _ := store.Get(r, "cookie-name")
+
+	if session.Values["authenticated"] == true {
+		userId := fmt.Sprintf("%v",session.Values["user"])
+
+		if err != nil {
+			panic(err)
+		}
+
+		change := bson.M{"$push": bson.M{"lastvisitedgames": game.SteamAppid}}
+
+		err = utils.UserDb.Update(bson.M{"_id":bson.ObjectIdHex(userId)}, change)
+
+		if err != nil {
+			panic(err)
+		}
+
+		}
+
 	game.view("myset")
 
 	if err != nil {
@@ -72,7 +94,7 @@ func ExecuteGameTemplate(w http.ResponseWriter, templates []string, page GameDet
 // Redis ordered list example
 func (g Game) view(key string) {
 	id := strconv.Itoa(g.SteamAppid)
-	keys, cursor, err := utils.RedisClient.ZScan(key, 0, id, 1).Result()
+	keys, _, err := utils.RedisClient.ZScan(key, 0, id, 1).Result()
 	if len(keys) != 0 {
 		utils.RedisClient.ZIncrBy(key, float64(1), id)
 	} else {
@@ -85,5 +107,5 @@ func (g Game) view(key string) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(keys, cursor, err)
+	//fmt.Println(keys, cursor, err)
 }

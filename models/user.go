@@ -23,4 +23,9 @@ type User struct {
 	Loccityid                int    `json:"loccityid"`
 	Email                    string `json:"email" bson:"email,omitempty"`
 	Password                 string `json:"password" bson:"password,omitempty"`
+	LastVisitedGames		 []int `json:"lastvisitedgames"`
+}
+
+type Status struct {
+	Online bool
 }
