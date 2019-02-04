@@ -10,20 +10,7 @@ import (
 	"io/ioutil"
 	"net/http"
 )
-/*
-var url = 'http://localhost:8080/user';
 
-fetch(url, {
-  method: 'GET', // or 'PUT'
-  headers:{
-    'Content-Type': 'application/json',
-	'Email': 'canerakdas@gmail.com',
-	'Password': '1234'
-  }
-}).then(res => res.json())
-.then(response => localStorage.setItem("user",JSON.stringify(response)))
-.catch(error => console.error('Error:', error));
-*/
 var (
 	// key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
 	key = []byte("super-secret-key")
