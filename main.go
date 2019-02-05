@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/canerakdas/gaben/controllers"
 	"github.com/gorilla/mux"
+	"github.com/robfig/cron"
 	"log"
 	"net/http"
 )
@@ -22,11 +23,14 @@ func main() {
 	r.HandleFunc("/user",controllers.PatchUser).Methods("PATCH")
 	r.HandleFunc("/user",controllers.DeleteUser).Methods("DELETE")
 
-	r.HandleFunc("/secret", controllers.Secret)
 	r.HandleFunc("/logout", controllers.Logout).Methods("GET")
 
 	r.PathPrefix("/styles/").Handler(http.StripPrefix("/styles/", http.FileServer(http.Dir("template/styles/"))))
 
 	controllers.CollectHeader()
+	c := cron.New()
+	c.AddFunc("@every 0h10m0s", controllers.CronGameView)
+	c.Start()
+
 	log.Fatal(http.ListenAndServe("localhost:8080", r))
 }

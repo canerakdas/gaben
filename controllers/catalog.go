@@ -36,7 +36,7 @@ func GetCatalog(w http.ResponseWriter, r *http.Request) {
 		skip, _ = strconv.Atoi(page[0])
 	}
 
-	limit := 10
+	limit := 21
 	skip = limit * skip
 	count, _ := utils.GameDb.Find(bson.M{"$and": andQuery}).Count()
 	pageCount := ((count - (count % limit)) / limit) + 1
@@ -48,8 +48,9 @@ func GetCatalog(w http.ResponseWriter, r *http.Request) {
 		pagination[i] = strings.Join(paginationTemp, "/")
 	}
 	var catalog = make([]models.Game, 10, 100)
-
-	utils.GameDb.Find(bson.M{"$and": andQuery}).Skip(skip).Limit(limit).All(&catalog)
+	//TODO : Catalog list score needed, (Metacritic score 20%, view weekly 20%, view monthly 20%, discount ratio 40%)
+	//TODO : Catalog rating by view ratio (weekly) // 1(Day 1) 2(Day 2) 3(Day 3) 4(Day 4) 5(Day 5) 6(Day 6) 7(Day 7) 8(Day 8) 9(This week) 10(This month)
+	utils.GameDb.Find(bson.M{"$and": andQuery}).Sort("-metacritic.score").Limit(limit).Skip(skip).All(&catalog)
 
 	if len(catalog) == 0 {
 		fmt.Println("TODO: EMPTY CATALOG PAGE")

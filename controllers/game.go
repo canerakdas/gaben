@@ -107,5 +107,23 @@ func (g Game) view(key string) {
 	if err != nil {
 		panic(err)
 	}
-	//fmt.Println(keys, cursor, err)
+}
+
+func CronGameView()  {
+	keys, _, err := utils.RedisClient.ZScan("myset", 0, "", 10000).Result()
+
+	if err != nil {
+		panic(err)
+	}
+
+	if len(keys) != 0{
+	for i:=0;i<len(keys)/2;i++{
+		key, _ := strconv.Atoi(keys[i*2])
+		value, _ := strconv.Atoi(keys[(i*2)+1])
+
+		change := bson.M{"$inc": bson.M{"view": value}}
+		err = utils.GameDb.Update(bson.M{"steamappid":key}, change)
+	}
+	utils.RedisClient.Del("myset")
+	}
 }

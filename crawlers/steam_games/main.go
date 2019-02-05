@@ -43,6 +43,7 @@ type Game struct {
 		Reviews             string `json:"reviews"`
 		HeaderImage         string `json:"header_image"`
 		Website             string `json:"website"`
+		View				int `json:"view"`
 		PcRequirements      struct {
 			Minimum     string `json:"minimum"`
 			Recommended string `json:"recommended"`
@@ -181,8 +182,9 @@ func main() {
 		fmt.Println("whooops")
 		os.Exit(1)
 	}
-	for i := 0; i < len(result[0].Applist.Apps); i++ {
+	for i := 40452; i < len(result[0].Applist.Apps); i++ {
 		var appid = result[0].Applist.Apps[i].Appid
+		//40452
 		fmt.Println("Index:", i, "App id:", appid)
 		getGameInfo("https://store.steampowered.com/api/appdetails?appids=gameid&cc=us&l=en", strconv.Itoa(appid))
 	}

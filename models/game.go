@@ -14,6 +14,7 @@ type Game struct {
 	Reviews             string `json:"reviews"`
 	HeaderImage         string `json:"header_image"`
 	Website             string `json:"website"`
+	View				int `json:"view"`
 	PcRequirements      struct {
 		Minimum     string `json:"minimum"`
 		Recommended string `json:"recommended"`

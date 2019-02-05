@@ -1,66 +1,38 @@
 {{template "header" .}}
-{{range $index, $game := .Content}}
+
+<style>
+    .catalog-item {
+        width: 33%;
+        overflow: hidden;
+        display: inline-block;
+        height: 210px;
+    }
+    .catalog-image{
+        width: 100%;
+        height: 179px;
+        overflow: hidden;
+    }
+    .catalog-image img{
+        width: 100%;
+    }
+</style>
 <div id="content">
     <div class="container">
-        <nav id="breadcrumb">
-            {{if $game.Genres}}
-                <ul>
-                    {{range $key, $value := $game.Genres}}
-                        <li>
-                            <a href="/catalog/{{$value.ID}}/{{$value.Description}}">{{$value.Description}}</a>
-                        </li>
-                    {{end}}
-                </ul>
-            {{end}}
-        </nav>
-        <div id="game-detail">
-            <div class="item" id="media">
-                {{if $game.Screenshots}}
-                    {{range $key, $value := $game.Screenshots}}
-                            <img src="{{$value.PathThumbnail}}" />
-                    {{end}}
-                {{end}}
+{{range $index, $game := .Content}}
+        <div class="catalog-item">
+            <div class="catalog-image">
+                <img src="{{(index $game.Screenshots 0).PathThumbnail}}" />
             </div>
-            <div class="item" id="information">
-                <h3><a href="/games/{{$game.SteamAppid}}/{{$game.Name}}">{{$game.Name}}</a></h3>
-                <p>{{$game.ShortDescription}}</p>
-
-                {{if $game.Developers}}
-                <strong>Developers</strong>
-                <ul>
-                    {{range $key, $value := $game.Developers}}
-                    <li>
-                        {{$value}}
-                    </li>
-                    {{end}}
-                </ul>
-                {{end}}
-
-                {{if $game.Publishers}}
-                    <strong>Publishers</strong>
-                    <ul>
-                        {{range $key, $value := $game.Publishers}}
-                            <li>
-                                {{$value}}
-                            </li>
-                        {{end}}
-                    </ul>
-                {{end}}
-
-                {{if $game.ReleaseDate.Date}}
-                <strong>Release Date</strong>
-                <ul>
-                    <li>{{$game.ReleaseDate.Date}}</li>
-                </ul>
-                {{end}}
+            <div class="catalog-name">
+                <a href="/games/{{$game.SteamAppid}}/{{$game.Name}}">{{$game.Name}}--{{$game.Metacritic.Score}}</a>
             </div>
         </div>
+{{end}}
     </div>
 </div>
-{{end}}
 <ul>
     {{range $index, $value := .Pagination}}
-        <li><a href="{{$value}}">Page {{$index}}</a> </li>
+        <li style="display: inline-block"><a href="{{$value}}">{{$index}}</a> </li>
     {{end}}
 </ul>
 {{template "footer"}}
